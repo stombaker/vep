@@ -6,6 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class MainController extends Controller {
     public function indexAction() {
-        return $this->render('VepMainBundle:Default:index.html.twig');
+        return $this->render('VepMainBundle:Main:index.html.twig');
     }
 }
