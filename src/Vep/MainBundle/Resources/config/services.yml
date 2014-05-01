@@ -1,0 +1,7 @@
+parameters:
+#    vep_main.example.class: Vep\MainBundle\Example
+
+services:
+#    vep_main.example:
+#        class: %vep_main.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

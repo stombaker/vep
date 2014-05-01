@@ -1,0 +1,4 @@
+vep_main:
+    resource: "@VepMainBundle/Resources/config/routing.yml"
+    prefix:   /
+
