@@ -11,5 +11,35 @@
 
     <p>Aenean at faucibus erat. Ut mollis at orci varius hendrerit. Integer eget lectus in eros fringilla vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam varius, elit et mattis accumsan, urna velit aliquet ligula, a commodo massa nisl ut tortor. Quisque vestibulum condimentum massa, ut lacinia enim aliquet sit amet. Nulla facilisi. Quisque dictum ligula urna, rhoncus posuere nibh gravida sit amet. Nullam tincidunt nec mauris congue faucibus. Sed dapibus ullamcorper sapien. Aenean laoreet turpis lacus, vitae convallis ligula malesuada eget. Phasellus auctor placerat nulla in interdum. Donec rhoncus volutpat augue at fringilla. Sed sed viverra felis.</p>
     
-    <h2>Prochainement</h2>
+    {% if production is defined and production is not empty %}
+        <h2>Prochainement</h2>
+        
+        <div class="row">
+            <div class="col-sm-4">
+                <img src="{{ asset('img/poster/' ~ production.poster) }}" alt="Poster de {{ production.title }}" class="poster" />
+            </div>
+
+            <div class="col-sm-8">
+                <h3>{{ production.title }}</h3>
+                <p>{{ production.content|nl2br }}</p>
+                
+                <p>
+                    <a href="{{ path('vep_reservation_production_read', {'id': production.id}) }}" class="btn btn-primary">
+                        Plus d'information
+                        <i class="glyphicon glyphicon-share-alt"></i>
+                    </a>
+                </p>
+
+                <h4>Liste des séances</h4>
+
+                <ul class="list-unstyled">
+                    {% for session in production.comingSessions %}
+                        <li><a href="{{ path('vep_reservation_session_read', {'id': session.id}) }}">{{ session.date|date('d/m/Y \à H:i') }}</a></li>
+                    {% else %}
+                        <li class="text-muted">Aucune séance programmée pour le moment</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

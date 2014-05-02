@@ -1,0 +1,12 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Séance introuvable{% endblock %}
+
+{% block body %}
+    <h1>Séance introuvable</h1>
+    
+    <p class="alert alert-warning">
+        Il semble que la séance recherchée soit introuvable.
+        Vous pouvez revenir à <a href="{{ path('vep_reservation_session_list') }}">la liste des séances</a> ou à <a href="{{ path('homepage') }}">l'accueil</a>.
+    </p>
+{% endblock %}

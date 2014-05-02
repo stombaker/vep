@@ -1,0 +1,38 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Liste des pièces{% endblock %}
+
+{% block body %}
+    <h1>Liste des pièces</h1>
+    
+    <table class="table table-hover table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Nom de la pièce</th>
+                <th>Séances</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for production in list %}
+                <tr>
+                    <td>
+                        <a href="{{ path('vep_reservation_production_read', {'id': production.id}) }}">{{ production.title }}</a>
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            {% for session in production.sessions %}
+                                <li><a href="{{ path('vep_reservation_session_read', {'id': session.id}) }}">{{ session.date|date('d/m/Y \à H:i') }}</a></li>
+                            {% else %}
+                                <li class="text-muted">Aucune séance programmée actuellement</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">Aucune pièce enregistrée pour le moment</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

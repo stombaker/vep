@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductionRepository extends EntityRepository
 {
+    public function findComing() {
+        return $this->createQueryBuilder('p')
+                    ->join('p.sessions', 's')
+                    ->where('s.date > :date')
+                    ->orderBy('s.date', 'asc')
+                    ->setFirstResult(0)
+                    ->setMaxResults(1)
+                    ->setParameter('date', new \Datetime())
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
 }

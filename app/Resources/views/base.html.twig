@@ -5,6 +5,7 @@
         <title>{% block title %}Voir &amp; Entendre{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/bootstrap-theme.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}" />
     </head>
@@ -23,7 +24,9 @@
 
                 <div class="collapse navbar-collapse" id="main-nav">
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ path('homepage') }}">Accueil</a></li>
+                        <li><a href="{{ path('homepage') }}"><i class="glyphicon glyphicon-home"></i> Accueil</a></li>
+                        <li><a href="{{ path('vep_reservation_production_list') }}"><i class="glyphicon glyphicon-list"></i> Liste des pièces</a></li>
+                        <li><a href="{{ path('vep_reservation_session_list') }}"><i class="glyphicon glyphicon-calendar"></i> Liste des séances</a></li>
                     </ul>
                 </div>
             </div>
@@ -37,8 +40,8 @@
             
         </footer>
         
-        <script src="{{ asset('jquery.min.js') }}"></script>
-        <script src="{{ asset('bootstrap.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

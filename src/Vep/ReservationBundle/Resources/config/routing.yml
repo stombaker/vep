@@ -1,0 +1,19 @@
+vep_reservation_production_list:
+    path: /play/list
+    defaults: { _controller: VepReservationBundle:Production:list }
+
+vep_reservation_production_read:
+    path: /play/{id}
+    defaults: { _controller: VepReservationBundle:Production:read }
+    requirements:
+        id: \d+
+
+vep_reservation_session_list:
+    path: /session/list
+    defaults: { _controller: VepReservationBundle:Session:list }
+
+vep_reservation_session_read:
+    path: /session/{id}
+    defaults: { _controller: VepReservationBundle:Session:read }
+    requirements:
+        id: \d+

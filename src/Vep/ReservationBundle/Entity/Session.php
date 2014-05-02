@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Session
  *
- * @ORM\Table()
+ * @ORM\Table(name="vep_session")
  * @ORM\Entity(repositoryClass="Vep\ReservationBundle\Entity\SessionRepository")
  */
 class Session
@@ -35,10 +35,18 @@ class Session
     private $production;
     
     /**
-     * @ORM\OneToMany(targetEntity="Vep\ReservationBundle\Entity\Reservations", mappedBy="session")
+     * @ORM\OneToMany(targetEntity="Vep\ReservationBundle\Entity\Reservation", mappedBy="session")
      */
     private $reservations;
-
+    
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->reservations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -72,13 +80,6 @@ class Session
     {
         return $this->date;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->reservations = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Set production
@@ -106,12 +107,12 @@ class Session
     /**
      * Add reservations
      *
-     * @param \Vep\ReservationBundle\Entity\Reservations $reservations
+     * @param \Vep\ReservationBundle\Entity\Reservation $reservation
      * @return Session
      */
-    public function addReservation(\Vep\ReservationBundle\Entity\Reservations $reservations)
+    public function addReservation(\Vep\ReservationBundle\Entity\Reservation $reservation)
     {
-        $this->reservations[] = $reservations;
+        $this->reservations[] = $reservation;
 
         return $this;
     }
@@ -119,11 +120,11 @@ class Session
     /**
      * Remove reservations
      *
-     * @param \Vep\ReservationBundle\Entity\Reservations $reservations
+     * @param \Vep\ReservationBundle\Entity\Reservation $reservation
      */
-    public function removeReservation(\Vep\ReservationBundle\Entity\Reservations $reservations)
+    public function removeReservation(\Vep\ReservationBundle\Entity\Reservation $reservation)
     {
-        $this->reservations->removeElement($reservations);
+        $this->reservations->removeElement($reservation);
     }
 
     /**

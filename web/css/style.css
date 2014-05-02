@@ -1,0 +1,43 @@
+body {
+    padding-top: 50px;
+    padding-bottom: 25px;
+}
+
+.poster {
+    width: 100%;
+    box-shadow: 2px 2px 5px #aaa;
+}
+
+#theater {
+    overflow: auto;
+}
+
+#theater>div {
+    width: 600px;
+    height: 600px;
+    position: relative;
+}
+
+.seat {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    border: 1px solid black;
+    border-radius: 2px;
+    line-height: 45px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: color ease 0.25s, background-color ease 1s;
+}
+
+.seat.taken {
+    cursor: not-allowed;
+    color: white;
+    background-color: #a94442;
+}
+
+.seat.selected {
+    color: white;
+    background-color: #3c763d;
+}

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Production
  *
- * @ORM\Table()
+ * @ORM\Table(name="vep_production")
  * @ORM\Entity(repositoryClass="Vep\ReservationBundle\Entity\ProductionRepository")
  */
 class Production
@@ -48,6 +48,14 @@ class Production
     private $sessions;
 
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->sessions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -126,13 +134,6 @@ class Production
     {
         return $this->poster;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->sessions = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add sessions
@@ -165,5 +166,24 @@ class Production
     public function getSessions()
     {
         return $this->sessions;
+    }
+    
+    public function getSortedSessions() {
+        $sessions = $this->getSessions()->toArray();
+        usort($sessions, function($s1, $s2){
+            return $s1->getDate()->getTimestamp() - $s2->getDate()->getTimestamp();
+        });
+        return $sessions;
+    }
+    
+    public function getComingSessions() {
+        $sessions = $this->getSortedSessions();
+        $result = array();
+        foreach ($sessions as $session) {
+            if ($session->getDate()->getTimestamp() > time()) {
+                $result[] = $session;
+            }
+        }
+        return $result;
     }
 }

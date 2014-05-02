@@ -1,0 +1,26 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{{ production.title }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-4">
+            <img src="{{ asset('img/poster/' ~ production.poster) }}" alt="Poster de {{ production.title }}" class="poster" />
+        </div>
+        
+        <div class="col-sm-8">
+            <h1>{{ production.title }}</h1>
+            <p>{{ production.content|nl2br }}</p>
+            
+            <h3>Liste des séances</h3>
+            
+            <ul class="list-unstyled">
+                {% for session in production.sortedSessions %}
+                    <li><a href="{{ path('vep_reservation_session_read', {'id': session.id}) }}">{{ session.date|date('d/m/Y \à H:i') }}</a></li>
+                {% else %}
+                    <li class="text-muted">Aucune séance programmée pour le moment</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

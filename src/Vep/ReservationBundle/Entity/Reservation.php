@@ -3,11 +3,12 @@
 namespace Vep\ReservationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Reservation
  *
- * @ORM\Table()
+ * @ORM\Table(name="vep_reservation")
  * @ORM\Entity(repositoryClass="Vep\ReservationBundle\Entity\ReservationRepository")
  */
 class Reservation
@@ -25,6 +26,7 @@ class Reservation
      * @var string
      *
      * @ORM\Column(name="firstname", type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez indiquer un prénom")
      */
     private $firstname;
 
@@ -32,6 +34,7 @@ class Reservation
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez indiquer un nom")
      */
     private $lastname;
 
@@ -39,6 +42,8 @@ class Reservation
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez indiquer une adresse e-mail")
+     * @Assert\Email(message="Veuillez indiquer une adresse e-mail valide")
      */
     private $email;
 
@@ -46,13 +51,14 @@ class Reservation
      * @var array
      *
      * @ORM\Column(name="seats", type="json_array")
+     * @Assert\NotBlank(message="Veuillez sélectionner les places souhaitées")
      */
     private $seats;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=255)
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
     private $city;
 

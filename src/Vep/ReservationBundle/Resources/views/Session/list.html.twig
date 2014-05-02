@@ -1,0 +1,32 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Liste des séances{% endblock %}
+
+{% block body %}
+    <h1>Liste des séances</h1>
+    
+    <table class="table table-hover table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Date de la séance</th>
+                <th>Nom de la pièce</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in list %}
+                <tr>
+                    <td>
+                        <a href="{{ path('vep_reservation_session_read', {'id': session.id}) }}">{{ session.date|date('d/m/Y \à H:i') }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('vep_reservation_production_read', {'id': session.production.id}) }}">{{ session.production.title }}</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">Aucune pièce enregistrée pour le moment</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
