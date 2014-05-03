@@ -3,6 +3,7 @@
 namespace Vep\ReservationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Session
@@ -25,6 +26,8 @@ class Session
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
+     * @Assert\NotBlank(message="Veuillez indiquer une date")
+     * @Assert\DateTime(message="Veuillez indiquer une date valide")
      */
     private $date;
     

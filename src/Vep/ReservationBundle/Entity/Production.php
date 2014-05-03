@@ -3,12 +3,14 @@
 namespace Vep\ReservationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Production
  *
  * @ORM\Table(name="vep_production")
  * @ORM\Entity(repositoryClass="Vep\ReservationBundle\Entity\ProductionRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Production
 {
@@ -25,6 +27,7 @@ class Production
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez indiquer un titre")
      */
     private $title;
 
@@ -32,6 +35,7 @@ class Production
      * @var string
      *
      * @ORM\Column(name="content", type="text")
+     * @Assert\NotBlank(message="Veuillez indiquer un contenu")
      */
     private $content;
 
@@ -43,9 +47,16 @@ class Production
     private $poster;
     
     /**
-     * @ORM\OneToMany(targetEntity="Vep\ReservationBundle\Entity\Session", mappedBy="production")
+     * @ORM\OneToMany(targetEntity="Vep\ReservationBundle\Entity\Session", mappedBy="production", cascade={"persist"})
      */
     private $sessions;
+    
+    /**
+     * @Assert\File(maxSize="10M",
+     *              mimeTypes = {"image/png", "image/jpeg", "image/gif"},
+     *              mimeTypesMessage = "Choisissez une image valide")
+     */
+    public $file;
 
 
     /**
@@ -138,24 +149,25 @@ class Production
     /**
      * Add sessions
      *
-     * @param \Vep\ReservationBundle\Entity\Session $sessions
+     * @param \Vep\ReservationBundle\Entity\Session $session
      * @return Production
      */
-    public function addSession(\Vep\ReservationBundle\Entity\Session $sessions)
+    public function addSession(\Vep\ReservationBundle\Entity\Session $session)
     {
-        $this->sessions[] = $sessions;
+        $this->sessions[] = $session;
+        $session->setProduction($this);
 
         return $this;
     }
 
     /**
-     * Remove sessions
+     * Remove session
      *
-     * @param \Vep\ReservationBundle\Entity\Session $sessions
+     * @param \Vep\ReservationBundle\Entity\Session $session
      */
-    public function removeSession(\Vep\ReservationBundle\Entity\Session $sessions)
+    public function removeSession(\Vep\ReservationBundle\Entity\Session $session)
     {
-        $this->sessions->removeElement($sessions);
+        $this->sessions->removeElement($session);
     }
 
     /**
@@ -185,5 +197,62 @@ class Production
             }
         }
         return $result;
+    }
+    
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file) {
+            $this->poster = sha1(uniqid(mt_rand(), true)) . '.' . $this->file->guessExtension();
+        } else {
+            $this->poster = 'default.png';
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+        $this->file->move($this->getUploadRootDir(), $this->poster);
+        unset($this->file);
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if ($file = $this->getAbsolutePath()) {
+            unlink($file);
+        }
+    }
+    
+    public function getAbsolutePath()
+    {
+        return null === $this->poster ? null : $this->getUploadRootDir().'/'.$this->poster;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->poster ? null : $this->getUploadDir().'/'.$this->poster;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
+        return __DIR__.'/../../../../web/' . $this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        return 'bundles/reservation/img/posters';
     }
 }

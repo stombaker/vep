@@ -28,6 +28,12 @@
                         <li><a href="{{ path('vep_reservation_production_list') }}"><i class="glyphicon glyphicon-list"></i> Liste des pièces</a></li>
                         <li><a href="{{ path('vep_reservation_session_list') }}"><i class="glyphicon glyphicon-calendar"></i> Liste des séances</a></li>
                     </ul>
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="navbar-text">Connecté en tant que {{ app.user.username }}</li>
+                            <li><a href="{{ path('fos_user_security_logout') }}">déconnexion</a></li>
+                        </ul>
+                    {% endif %}
                 </div>
             </div>
         </nav>

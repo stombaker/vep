@@ -9,3 +9,13 @@ services:
         arguments: [@vep_reservation.theater]
         tags:
             - { name: form.type, alias: form_reservation }
+    
+    vep_reservation.form.type.production:
+        class: Vep\ReservationBundle\Form\Type\ProductionType
+        tags:
+            - { name: form.type, alias: form_production }
+    
+    vep_reservation.form.type.session:
+        class: Vep\ReservationBundle\Form\Type\SessionType
+        tags:
+            - { name: form.type, alias: form_session }

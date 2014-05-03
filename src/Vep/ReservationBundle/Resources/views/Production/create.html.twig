@@ -1,0 +1,119 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Ajouter une pièce{% endblock %}
+
+{% block body %}
+    <h1>Ajouter une pièce</h1>
+    
+    <h3>Informations générales</h3>
+    
+    {{ form_start(form, {'action': path('vep_reservation_production_create'), 'attr': {'class': 'form-horizontal'} }) }}
+        {% if form.vars.errors|length > 0 %}
+            <div class="alert alert-danger">
+                {% for error in form.vars.errors %}
+                    <p>{{ error.message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-group{% if form.title.vars.errors|length > 0 %} has-error{% endif %}">
+            {{ form_label(form.title, null, {'label_attr': {'class': 'control-label col-sm-2'} }) }}
+            <div class="col-sm-10">
+                {{ form_widget(form.title, {'attr': {'class': 'form-control'} }) }}
+            </div>
+            {% if form.title.vars.errors|length > 0 %}
+                <span class="help-block text-danger">
+                {% for error in form.title.vars.errors %}
+                    {{ error.message }}
+                {% endfor %}
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="form-group{% if form.content.vars.errors|length > 0 %} has-error{% endif %}">
+            {{ form_label(form.content, null, {'label_attr': {'class': 'control-label col-sm-2'} }) }}
+            <div class="col-sm-10">
+                {{ form_widget(form.content, {'attr': {'class': 'form-control'} }) }}
+            </div>
+            {% if form.content.vars.errors|length > 0 %}
+                <span class="help-block text-danger">
+                {% for error in form.content.vars.errors %}
+                    {{ error.message }}
+                {% endfor %}
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="form-group{% if form.file.vars.errors|length > 0 %} has-error{% endif %}">
+            {{ form_label(form.file, null, {'label_attr': {'class': 'control-label col-sm-2'} }) }}
+            <div class="col-sm-10">
+                {{ form_widget(form.file, {'attr': {'class': 'form-control', 'accept': 'image/png,image/jpeg,image/gif'} }) }}
+            </div>
+            {% if form.file.vars.errors|length > 0 %}
+                <span class="help-block text-danger">
+                {% for error in form.file.vars.errors %}
+                    {{ error.message }}
+                {% endfor %}
+                </span>
+            {% endif %}
+        </div>
+        
+        <h3>Liste des séances</h3>
+
+        <div id="list-session">
+            {% for session in form.sessions %}
+                <div class="form-group session-item">
+                    {{ form_label(session.date, null, {'label_attr': {'class': 'control-label col-sm-2', 'for': session.date.date.vars.id} }) }}
+                    <div class="col-sm-2">{{ form_widget(session.date.date, {'attr': {'class': 'form-control'} }) }}</div>
+                    <div class="col-sm-2">{{ form_widget(session.date.time, {'attr': {'class': 'form-control'} }) }}</div>
+                    <a href="#" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Supprimer</a>
+                    {% if form.poster.vars.errors|length > 0 %}
+                        <span class="help-block text-danger">
+                        {% for error in form.poster.vars.errors %}
+                            {{ error.message }}
+                        {% endfor %}
+                        </span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <a href="#" class="btn btn-default" id="add-session"><i class="glyphicon glyphicon-plus"></i> Ajouter</a>
+            </div>
+        </div>
+
+        <div class="offset-sm-2 col-sm-10">
+            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'} }) }}
+        </div>
+        <div class="hidden">{{ form_rest(form) }}</div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function(){
+            var prototype =
+                '<div class="form-group session-item">' +
+                '<label class="control-label col-sm-2 required" for="form_production_sessions___INDEX___date_date">Date</label>' +
+                '<div class="col-sm-2"><input type="date" id="form_production_sessions___INDEX___date_date" name="form_production[sessions][__INDEX__][date][date]" required="required" class="form-control"></div>' +
+                '<div class="col-sm-2"><input type="time" id="form_production_sessions___INDEX___date_time" name="form_production[sessions][__INDEX__][date][time]" required="required" class="form-control"></div>' +
+                '<a href="#" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Supprimer</a>' +
+                '</div>'
+            var index = $('.session-item').length
+            $('#add-session').on('click', function(e){
+                e.preventDefault()
+                
+                var $clone = $(prototype.replace(/__INDEX__/g, index))
+                index++
+                
+                $('#list-session').append($clone)
+            })
+            
+            $('#list-session').on('click', '.btn.btn-danger', function(e){
+                e.preventDefault()
+                $(this).parent().remove()
+            })
+        })
+    </script>
+{% endblock %}

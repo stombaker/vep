@@ -8,6 +8,10 @@ vep_reservation_production_read:
     requirements:
         id: \d+
 
+vep_reservation_production_create:
+    path: /play/create
+    defaults: { _controller: VepReservationBundle:Production:create }
+
 vep_reservation_session_list:
     path: /session/list
     defaults: { _controller: VepReservationBundle:Session:list }

@@ -5,7 +5,7 @@
 {% block body %}
     <div class="row">
         <div class="col-sm-4">
-            <img src="{{ asset('img/poster/' ~ production.poster) }}" alt="Poster de {{ production.title }}" class="poster" />
+            <img src="{{ asset(production.webPath) }}" alt="Poster de {{ production.title }}" class="poster" />
         </div>
         
         <div class="col-sm-8">

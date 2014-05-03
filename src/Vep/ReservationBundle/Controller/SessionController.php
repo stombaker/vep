@@ -49,16 +49,4 @@ class SessionController extends Controller {
             return $this->render('VepReservationBundle:Session:read.html.twig', $data);
         }
     }
-    
-    public function createAction() {
-        
-    }
-    
-    public function updateAction() {
-        
-    }
-    
-    public function deleteAction() {
-        
-    }
 }
