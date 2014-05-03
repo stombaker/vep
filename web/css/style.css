@@ -35,11 +35,11 @@ body {
 
 .seat.taken {
     cursor: not-allowed;
-    color: white;
-    background-color: #a94442;
+    color: #ffffff;
+    background-color: #df382c;
 }
 
 .seat.selected {
-    color: white;
-    background-color: #3c763d;
+    color: #ffffff;
+    background-color: #38b44a;
 }

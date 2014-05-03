@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-7">
             <div id="theater">
                 <div>
                     {% for seat in map %}
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-5">
             <h3>
                 {{ session.production.title }}
                 <small><a href="{{ path('vep_reservation_production_read', {'id': session.production.id}) }}">Plus d'information</a></small>
@@ -91,7 +91,7 @@
                 <div class="form-group{% if form.city.vars.errors|length > 0 %} has-error{% endif %}">
                     {{ form_label(form.city, null, {'label_attr': {'class': 'control-label col-sm-4'} }) }}
                     <div class="col-sm-8">
-                        {{ form_widget(form.city, {'attr': {'class': 'form-control'} }) }}
+                        {{ form_widget(form.city, {'attr': {'class': 'form-control', 'placeholder': 'Optionnel'} }) }}
                     </div>
                     {% if form.city.vars.errors|length > 0 %}
                         <span class="help-block text-danger">
@@ -112,6 +112,29 @@
                     {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'} }) }}
                 </div>
             {{ form_end(form) }}
+            
+            {% if is_granted('ROLE_ADMIN') %}
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Prénom Nom</th>
+                            <th>Email</th>
+                            <th>Ville</th>
+                            <th>Places sélectionnées</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in session.reservations %}
+                            <tr>
+                                <td>{{ reservation.firstname }} {{ reservation.lastname }}</td>
+                                <td><a href="mailto:{{ reservation.email }}">{{ reservation.email }}</a></td>
+                                <td>{{ reservation.city }}</td>
+                                <td>{{ reservation.seats|join(', ') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
