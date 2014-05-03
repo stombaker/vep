@@ -4,6 +4,10 @@
 
 {% block body %}
     <h1>Liste des pièces</h1>
+                
+    {% if is_granted('ROLE_ADMIN') %}
+        <p><a href="{{ path('vep_reservation_production_create') }}" class="btn btn-default">Ajouter</a></p>
+    {% endif %}
     
     <table class="table table-hover table-striped table-bordered">
         <thead>

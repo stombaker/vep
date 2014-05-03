@@ -47,9 +47,19 @@ class Production
     private $poster;
     
     /**
-     * @ORM\OneToMany(targetEntity="Vep\ReservationBundle\Entity\Session", mappedBy="production", cascade={"persist"})
+     * @var updated
+     * 
+     * @ORM\Column(name="updated", type="datetime")
+     */
+    private $updated;
+    
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Vep\ReservationBundle\Entity\Session", mappedBy="production", cascade={"persist", "merge"})
      */
     private $sessions;
+    
+    private $removedSessions;
     
     /**
      * @Assert\File(maxSize="10M",
@@ -65,6 +75,7 @@ class Production
     public function __construct()
     {
         $this->sessions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->removedSessions = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -147,6 +158,29 @@ class Production
     }
 
     /**
+     * Set update
+     *
+     * @param Datetime $update
+     * @return Production
+     */
+    public function setUpdated(\Datetime $updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return Datetime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
      * Add sessions
      *
      * @param \Vep\ReservationBundle\Entity\Session $session
@@ -167,6 +201,7 @@ class Production
      */
     public function removeSession(\Vep\ReservationBundle\Entity\Session $session)
     {
+        $this->removedSessions[] = $session;
         $this->sessions->removeElement($session);
     }
 
@@ -178,6 +213,10 @@ class Production
     public function getSessions()
     {
         return $this->sessions;
+    }
+    
+    public function getRemovedSessions() {
+        return $this->removedSessions;
     }
     
     public function getSortedSessions() {

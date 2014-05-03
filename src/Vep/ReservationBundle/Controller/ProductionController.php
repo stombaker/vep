@@ -38,6 +38,7 @@ class ProductionController extends Controller {
 
             if ($form->isValid()) {
                 $production = $form->getData();
+                $production->setUpdated(new \Datetime());
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($production);
                 $em->flush();
@@ -49,11 +50,43 @@ class ProductionController extends Controller {
         $data = array(
             'form' => $form->createView()
         );
-        return $this->render('VepReservationBundle:Production:create.html.twig', $data);
+        return $this->render('VepReservationBundle:Production:form.html.twig', $data);
     }
     
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function updateAction(Request $request, $id) {
-        
+        $production = $this->getDoctrine()->getRepository('VepReservationBundle:Production')->find($id);
+        if ($production === null) {
+            return $this->render('VepReservationBundle:Production:404.html.twig');
+        } else {
+            $form = $this->createForm('form_production', $production);
+            if ($request->getMethod() === 'POST') {
+                $form->handleRequest($request);
+
+                if ($form->isValid()) {
+                    $production = $form->getData();
+                    $production->setUpdated(new \Datetime());
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($production);
+                    if ($production->getRemovedSessions() !== null) {
+                        foreach ($production->getRemovedSessions() as $session) {
+                            $em->remove($session);
+                        }
+                    }
+                    $em->flush();
+
+                    return $this->redirect($this->generateUrl('vep_reservation_production_read', array('id' => $production->getId())));
+                }
+            }
+
+            $data = array(
+                'form' => $form->createView(),
+                'production' => $production
+            );
+            return $this->render('VepReservationBundle:Production:form.html.twig', $data);
+        }
     }
     
     public function deleteAction(Request $request, $id) {

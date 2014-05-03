@@ -1,13 +1,22 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}Ajouter une pièce{% endblock %}
+{% block title %}{% if production is defined and production is not empty %}Modifier {{ production.title }}{% else %}Ajouter une pièce{% endif %}{% endblock %}
 
 {% block body %}
-    <h1>Ajouter une pièce</h1>
+    <h1>{% if production is defined and production is not empty %}{{ production.title }} <small>Modification de la pièce</small>{% else %}Ajouter une pièce{% endif %}</h1>
+    
+    {% if production is defined and production is not empty %}
+        <div class="row">
+            <div class="col-sm-8">
+    {% endif %}
     
     <h3>Informations générales</h3>
     
-    {{ form_start(form, {'action': path('vep_reservation_production_create'), 'attr': {'class': 'form-horizontal'} }) }}
+    {% if production is defined and production is not empty %}
+        {{ form_start(form, {'action': path('vep_reservation_production_update', {'id': production.id}), 'attr': {'class': 'form-horizontal'} }) }}
+    {% else %}
+        {{ form_start(form, {'action': path('vep_reservation_production_create'), 'attr': {'class': 'form-horizontal'} }) }}
+    {% endif %}
         {% if form.vars.errors|length > 0 %}
             <div class="alert alert-danger">
                 {% for error in form.vars.errors %}
@@ -15,7 +24,7 @@
                 {% endfor %}
             </div>
         {% endif %}
-
+        
         <div class="form-group{% if form.title.vars.errors|length > 0 %} has-error{% endif %}">
             {{ form_label(form.title, null, {'label_attr': {'class': 'control-label col-sm-2'} }) }}
             <div class="col-sm-10">
@@ -64,12 +73,12 @@
             {% for session in form.sessions %}
                 <div class="form-group session-item">
                     {{ form_label(session.date, null, {'label_attr': {'class': 'control-label col-sm-2', 'for': session.date.date.vars.id} }) }}
-                    <div class="col-sm-2">{{ form_widget(session.date.date, {'attr': {'class': 'form-control'} }) }}</div>
-                    <div class="col-sm-2">{{ form_widget(session.date.time, {'attr': {'class': 'form-control'} }) }}</div>
-                    <a href="#" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Supprimer</a>
-                    {% if form.poster.vars.errors|length > 0 %}
+                    <div class="col-sm-4">{{ form_widget(session.date.date, {'attr': {'class': 'form-control'} }) }}</div>
+                    <div class="col-sm-4">{{ form_widget(session.date.time, {'attr': {'class': 'form-control'} }) }}</div>
+                    <div class="col-sm-2"><a href="#" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Supprimer</a></div>
+                    {% if session.date.vars.errors|length > 0 %}
                         <span class="help-block text-danger">
-                        {% for error in form.poster.vars.errors %}
+                        {% for error in session.date.vars.errors %}
                             {{ error.message }}
                         {% endfor %}
                         </span>
@@ -88,6 +97,14 @@
         </div>
         <div class="hidden">{{ form_rest(form) }}</div>
     {{ form_end(form) }}
+    
+    {% if production is defined and production is not empty %}
+            </div>
+            <div class="col-sm-4">
+                <img src="{{ asset(production.webPath) }}" alt="Poster de {{ production.title }}" class="poster" />
+            </div>
+        </div> {# <div class="row"> #}
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
@@ -96,9 +113,9 @@
             var prototype =
                 '<div class="form-group session-item">' +
                 '<label class="control-label col-sm-2 required" for="form_production_sessions___INDEX___date_date">Date</label>' +
-                '<div class="col-sm-2"><input type="date" id="form_production_sessions___INDEX___date_date" name="form_production[sessions][__INDEX__][date][date]" required="required" class="form-control"></div>' +
-                '<div class="col-sm-2"><input type="time" id="form_production_sessions___INDEX___date_time" name="form_production[sessions][__INDEX__][date][time]" required="required" class="form-control"></div>' +
-                '<a href="#" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Supprimer</a>' +
+                '<div class="col-sm-4"><input type="date" id="form_production_sessions___INDEX___date_date" name="form_production[sessions][__INDEX__][date][date]" required="required" class="form-control"></div>' +
+                '<div class="col-sm-4"><input type="time" id="form_production_sessions___INDEX___date_time" name="form_production[sessions][__INDEX__][date][time]" required="required" class="form-control"></div>' +
+                '<div class="col-sm-2"><a href="#" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Supprimer</a></div>' +
                 '</div>'
             var index = $('.session-item').length
             $('#add-session').on('click', function(e){
@@ -112,7 +129,7 @@
             
             $('#list-session').on('click', '.btn.btn-danger', function(e){
                 e.preventDefault()
-                $(this).parent().remove()
+                $(this).parent().parent().remove()
             })
         })
     </script>

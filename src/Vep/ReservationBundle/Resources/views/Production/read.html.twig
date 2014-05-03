@@ -21,6 +21,10 @@
                     <li class="text-muted">Aucune séance programmée pour le moment</li>
                 {% endfor %}
             </ul>
+            
+            {% if is_granted('ROLE_ADMIN') %}
+                <p><a href="{{ path('vep_reservation_production_update', {'id': production.id}) }}" class="btn btn-default">Modifier</a></p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

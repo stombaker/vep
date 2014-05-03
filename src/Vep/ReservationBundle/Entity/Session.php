@@ -38,7 +38,7 @@ class Session
     private $production;
     
     /**
-     * @ORM\OneToMany(targetEntity="Vep\ReservationBundle\Entity\Reservation", mappedBy="session")
+     * @ORM\OneToMany(targetEntity="Vep\ReservationBundle\Entity\Reservation", mappedBy="session", cascade={"remove"})
      */
     private $reservations;
     

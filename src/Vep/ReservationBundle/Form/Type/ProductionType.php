@@ -20,7 +20,7 @@ class ProductionType extends AbstractType
                     'allow_delete' => true,
                     'by_reference' => false,
                 ))
-                ->add('save', 'submit', array('label' => 'Réserver'));
+                ->add('save', 'submit', array('label' => 'Envoyer'));
     }
 
     public function getName()
