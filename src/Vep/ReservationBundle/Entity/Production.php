@@ -246,7 +246,7 @@ class Production
     {
         if (null !== $this->file) {
             $this->poster = sha1(uniqid(mt_rand(), true)) . '.' . $this->file->guessExtension();
-        } else {
+        } elseif ($this->poster === null) {
             $this->poster = 'default.png';
         }
     }
