@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Réservation sur le site de Voir &amp; Entendre</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>Réservation sur le site de Voir & Entendre</h1>
+        
+        <p>
+            Madame, Monsieur,
+        </p>
+        <p>
+            Vous avez réserver des places sur le site de <a href="http://voir-entendre-posso.fr">Voir &amp; Entendre</a> le {{ reservation.date|date('d/m/Y \à H:i') }}.
+            Vous trouverez ci-dessus le récapitulatif de vos places ainsi que les informations fournies.
+        </p>
+        
+        <ul>
+            <li><strong>Séance</strong> : {{ reservation.session.date|date('d/m/Y \à H:i') }}</li>
+            <li><strong>Prénom</strong> : {{ reservation.firstname }}</li>
+            <li><strong>Nom</strong> : {{ reservation.lastname }}</li>
+            <li><strong>Adresse e-mail</strong> : {{ reservation.email }}</li>
+            <li><strong>Ville</strong> : {{ reservation.city }}</li>
+            <li>
+                <strong>Liste des places</strong> :
+                <ul>
+                    {% for seat in reservation.seats %}
+                        {{ seat }}
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    </body>
+</html>

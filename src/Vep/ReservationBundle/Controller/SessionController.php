@@ -36,6 +36,18 @@ class SessionController extends Controller {
                     $em->persist($session);
                     $em->flush();
                     
+                    $message = \Swift_Message::newInstance()
+                        ->setSubject('Réservation sur le site de Voir & Entendre')
+                        ->setFrom('contact@voir-entendre-posso.fr')
+                        ->setTo($reservation->getEmail())
+                        ->setBody(
+                            $this->renderView(
+                                'VepReservationBundle:Session:reserved.html.twig',
+                                array('reservation' => $reservation)
+                            )
+                        );
+                    $this->get('mailer')->send($message);
+                    
                     $this->get('session')->getFlashBag()->add('success', 'Votre réservation a été effectuée. Vous allez recevoir un mail à l\'adresse que vous avez indiquée.');
                     return $this->redirect($this->generateUrl('vep_reservation_session_read', array('id' => $id)));
                 }
