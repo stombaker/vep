@@ -22,34 +22,36 @@ class SessionController extends Controller {
         } else {
             $form = $this->createForm('form_reservation', new Reservation(), array('session' => $session));
             if ($request->getMethod() === 'POST') {
-                $form->handleRequest($request);
-                
-                if ($form->isValid()) {
-                    $reservation = $form->getData();
-                    $reservation->setDate(new \Datetime());
-                    $reservation->setSession($session);
-                    
-                    $session->addReservation($reservation);
-                    
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($reservation);
-                    $em->persist($session);
-                    $em->flush();
-                    
-                    $message = \Swift_Message::newInstance()
-                        ->setSubject('Réservation sur le site de Voir & Entendre')
-                        ->setFrom('contact@voir-entendre-posso.fr')
-                        ->setTo($reservation->getEmail())
-                        ->setBody(
-                            $this->renderView(
-                                'VepReservationBundle:Session:reserved.html.twig',
-                                array('reservation' => $reservation)
-                            )
-                        );
-                    $this->get('mailer')->send($message);
-                    
-                    $this->get('session')->getFlashBag()->add('success', 'Votre réservation a été effectuée. Vous allez recevoir un mail à l\'adresse que vous avez indiquée.');
-                    return $this->redirect($this->generateUrl('vep_reservation_session_read', array('id' => $id)));
+                if ($session->getDate()->format('Y-m-d') < (new \Datetime())->form('Y-m-d')) {
+                    $form->handleRequest($request);
+
+                    if ($form->isValid()) {
+                        $reservation = $form->getData();
+                        $reservation->setDate(new \Datetime());
+                        $reservation->setSession($session);
+
+                        $session->addReservation($reservation);
+
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($reservation);
+                        $em->persist($session);
+                        $em->flush();
+
+                        $message = \Swift_Message::newInstance()
+                            ->setSubject('Réservation sur le site de Voir & Entendre')
+                            ->setFrom('contact@voir-entendre-posso.fr')
+                            ->setTo($reservation->getEmail())
+                            ->setBody(
+                                $this->renderView(
+                                    'VepReservationBundle:Session:reserved.html.twig',
+                                    array('reservation' => $reservation)
+                                )
+                            );
+                        $this->get('mailer')->send($message);
+
+                        $this->get('session')->getFlashBag()->add('success', 'Votre réservation a été effectuée. Vous allez recevoir un mail à l\'adresse que vous avez indiquée.');
+                        return $this->redirect($this->generateUrl('vep_reservation_session_read', array('id' => $id)));
+                    }
                 }
             }
             
