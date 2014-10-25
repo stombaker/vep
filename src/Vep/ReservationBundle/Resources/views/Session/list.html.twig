@@ -1,4 +1,6 @@
 {% extends '::base.html.twig' %}
+{% set days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'] %}
+{% set months = ['', 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'] %}
 
 {% block title %}Liste des séances{% endblock %}
 
@@ -16,7 +18,7 @@
             {% for session in list %}
                 <tr>
                     <td>
-                        <a href="{{ path('vep_reservation_session_read', {'id': session.id}) }}">{{ session.date|date('d/m/Y \à H:i') }}</a>
+                        <a href="{{ path('vep_reservation_session_read', {'id': session.id}) }}">{{ days[session.date|date('w')] }} {{ session.date|date('d') }} {{ months[session.date|date('n')] }} {{ session.date|date('Y \à H:i') }}</a>
                     </td>
                     <td>
                         <a href="{{ path('vep_reservation_production_read', {'id': session.production.id}) }}">{{ session.production.title }}</a>

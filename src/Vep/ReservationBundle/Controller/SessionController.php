@@ -22,7 +22,8 @@ class SessionController extends Controller {
         } else {
             $form = $this->createForm('form_reservation', new Reservation(), array('session' => $session));
             if ($request->getMethod() === 'POST') {
-                if ($session->getDate()->format('Y-m-d') < (new \Datetime())->form('Y-m-d')) {
+                $date = new \Datetime();
+                if ($session->getDate()->format('Y-m-d') > $date->format('Y-m-d')) {
                     $form->handleRequest($request);
 
                     if ($form->isValid()) {
@@ -41,6 +42,7 @@ class SessionController extends Controller {
                             ->setSubject('Réservation sur le site de Voir & Entendre')
                             ->setFrom('contact@voir-entendre-posso.fr')
                             ->setTo($reservation->getEmail())
+                            ->setContentType('text/html')
                             ->setBody(
                                 $this->renderView(
                                     'VepReservationBundle:Session:reserved.html.twig',

@@ -1,4 +1,6 @@
 {% extends '::base.html.twig' %}
+{% set days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'] %}
+{% set months = ['', 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'] %}
 
 {% block title %}{{ production.title }}{% endblock %}
 
@@ -16,7 +18,7 @@
             
             <ul class="list-unstyled">
                 {% for session in production.sortedSessions %}
-                    <li><a href="{{ path('vep_reservation_session_read', {'id': session.id}) }}">{{ session.date|date('d/m/Y \à H:i') }}</a></li>
+                    <li><a href="{{ path('vep_reservation_session_read', {'id': session.id}) }}">{{ days[session.date|date('w')] }} {{ session.date|date('d') }} {{ months[session.date|date('n')] }} {{ session.date|date('Y \à H:i') }}</a></li>
                 {% else %}
                     <li class="text-muted">Aucune séance programmée pour le moment</li>
                 {% endfor %}

@@ -1,3 +1,5 @@
+{% set days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'] %}
+{% set months = ['', 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'] %}
 <!doctype html>
 <html>
     <head>
@@ -7,16 +9,15 @@
     <body>
         <h1>Réservation sur le site de Voir & Entendre</h1>
         
+        <p>Madame, Monsieur,</p>
+
         <p>
-            Madame, Monsieur,
+            Vous avez réservé des places sur le site de <a href="http://voir-entendre-posso.fr">Voir &amp; Entendre</a> le {{ reservation.date|date('d/m/Y \à H:i') }} et nous vous en remercions.
+            Vous trouverez ci-dessous le récapitulatif. 
         </p>
-        <p>
-            Vous avez réserver des places sur le site de <a href="http://voir-entendre-posso.fr">Voir &amp; Entendre</a> le {{ reservation.date|date('d/m/Y \à H:i') }}.
-            Vous trouverez ci-dessus le récapitulatif de vos places ainsi que les informations fournies.
-        </p>
-        
+
         <ul>
-            <li><strong>Séance</strong> : {{ reservation.session.date|date('d/m/Y \à H:i') }}</li>
+            <li><strong>Séance</strong> : <a href="{{ path('vep_reservation_session_read', {'id': reservation.session.id}) }}">{{ days[reservation.session.date|date('w')] }} {{ reservation.session.date|date('d') }} {{ months[reservation.session.date|date('n')] }} {{ reservation.session.date|date('Y \à H:i') }}</a></li>
             <li><strong>Prénom</strong> : {{ reservation.firstname }}</li>
             <li><strong>Nom</strong> : {{ reservation.lastname }}</li>
             <li><strong>Adresse e-mail</strong> : {{ reservation.email }}</li>
@@ -25,10 +26,37 @@
                 <strong>Liste des places</strong> :
                 <ul>
                     {% for seat in reservation.seats %}
-                        {{ seat }}
+                        <li>{{ seat }}</li>
                     {% endfor %}
                 </ul>
             </li>
         </ul>
+        
+        <p>
+            Cependant la réservation ne sera effective qu’à réception de votre règlement par chèque libellé à l’ordre de Voir et Entendre, à l’adresse suivante :
+        </p>
+        <p>
+            Trésorier
+            <br/>
+            Association Voir &amp; Entendre
+            <br/>
+            La maison neuve
+            <br/>
+            49170 LA POSSONNIERE
+        </p>
+        
+        <p>
+            Le tarif normal est de 7€ la place.
+            Pour les adhérents et enfants de moins de 14 ans, 5€.
+        </p>
+        
+        <p>
+            Si la réservation est faite après le mercredi précédant la séance, le délai est trop court pour recevoir votre règlement par courrier.
+            Dans ce cas, vous paierez sur place le jour de la séance.
+        </p>
+        
+        <p>
+            Vos billets seront à retirer en caisse au plus tard 15 minutes avant le début du spectacle.
+        </p> 
     </body>
 </html>

@@ -1,6 +1,11 @@
 {% extends '::base.html.twig' %}
+{% set days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'] %}
+{% set months = ['', 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'] %}
 
-{% block title %}Séance du {{ session.date|date('d/m/Y \à H:i') }}{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/style-print.css') }}" media="print" />
+{% endblock %}
+{% block title %}Séance du {{ days[session.date|date('w')] }} {{ session.date|date('d') }} {{ months[session.date|date('n')] }} {{ session.date|date('Y \à H:i') }}{% endblock %}
 
 {% block body %}
     {% set blocked = 'now'|date('Y-m-d') >= session.date|date('Y-m-d') %}
@@ -10,7 +15,7 @@
                 <div>
                     {% for seat in map %}
                         {% if seat.taken %}
-                            <span class="seat taken" style="top:{{ seat.y * 50 }}px;left:{{ seat.x * 25 }}px">
+                            <span class="seat taken " style="top:{{ seat.y * 50 }}px;left:{{ seat.x * 25 }}px">
                                 {{ seat.name }}
                             </span>
                         {% elseif blocked %}
@@ -18,7 +23,7 @@
                                 {{ seat.name }}
                             </span>
                         {% else %}
-                            <label for="seat-{{ seat.name }}" class="seat" style="top:{{ seat.y * 50 }}px;left:{{ seat.x * 25 }}px">
+                            <label for="seat-{{ seat.name }}" class="seat {% if seat.x == 0 or seat.x == 20 %}strap{% endif %}" style="top:{{ seat.y * 50 }}px;left:{{ seat.x * 25 }}px">
                                 {{ seat.name }}
                             </label>
                         {% endif %}
@@ -31,7 +36,7 @@
                 {{ session.production.title }}
                 <small><a href="{{ path('vep_reservation_production_read', {'id': session.production.id}) }}">Plus d'information</a></small>
             </h3>
-            <h4>Séance du {{ session.date|date('d/m/Y \à H:i') }}</h4>
+            <h4>Séance du {{ days[session.date|date('w')] }} {{ session.date|date('d') }} {{ months[session.date|date('n')] }} {{ session.date|date('Y \à H:i') }}</h4>
             
             {% for flashMessage in app.session.flashbag.get('success') %}
                 <div class="alert alert-success">
@@ -126,6 +131,14 @@
                     Nous vous invitons à arriver suffisamment tôt afin de pouvoir obtenir les places que vous désirez.
                 </p>
             {% endif %}
+            
+            <h5 style="clear:both;padding-top: 20px">Autres séances</h5>
+            
+            <ul>
+                {% for sessionO in session.production.sessions %}
+                    <li><a href="{{ path('vep_reservation_session_read', {'id': sessionO.id}) }}">{{ days[sessionO.date|date('w')] }} {{ sessionO.date|date('d') }} {{ months[sessionO.date|date('n')] }} {{ sessionO.date|date('Y \à H:i') }}</a></li>
+                {% endfor %}
+            </ul>
             
             {% if is_granted('ROLE_ADMIN') %}
                 <table class="table table-hover table-striped">

@@ -1,4 +1,6 @@
 {% extends '::base.html.twig' %}
+{% set days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'] %}
+{% set months = ['', 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'] %}
 
 {% block title %}Bienvenue sur le site de Voir &amp; Entendre{% endblock %}
 
@@ -8,16 +10,30 @@
     <h2>Présentation</h2>
     
     <p>
-        Bienvenue sur le site de l'association culturelle Voir &amp; Entendre à la Possonnière.
-        Cette année encore, nous nous mobilisons pour vous proposer régulièrement des pièces de théâtre tout au long de l'année.
+        Bienvenue sur le site de l'association culturelle <strong>Voir &amp; Entendre</strong> à la Possonnière.
+        Cette année encore, nous nous mobilisons pour vous proposer régulièrement des pièces de théâtre tout au long de l'année et des ateliers pour les jeunes.
     </p>
     <p>
-        Le mois de Juin arrive à grand pas et comme chaque année, les jeunes de l'atelier théâtre vous montreront leurs talents sous la forme de d'une pièce de théâtre mise en scène par Olivier Algourdin.
+        A ce sujet, les inscriptions aux ateliers se feront le <time>mercredi 17 septembre 2014 de 17 heures à 19 heures<time> au <em>théâtre du Ponton</em>.
     </p>
-    
     <p>
-        En attendant, nous vous invitons à vous informer régulièrement sur les séances proposées.
+        L’assemblée générale de l’association se déroulera également au <em>théâtre du Ponton</em> le <time>jeudi 25 septembre 2014</time>.
+        Nous ferons connaissance avec <strong>Leslie Quévet</strong>, une jeune artiste, qui à partir de cette année prendra la suite d’<strong>Olivier Algourdin</strong> pour l’encadrement des ateliers théâtre.
+        Elle nous présentera son projet pour cette saison.
     </p>
+    <p>
+        Les ateliers reprendront le <time>mercredi 1er octobre 2014</time>.
+        Les horaires vous seront communiqués, à la suite de la confection des groupes après les inscriptions.
+        Cette année encore, les enfants ont toujours la possibilité de participer à deux séances avant de confirmer leur inscription.
+    </p>
+    <p>
+        Ci-dessous vous pouvez d’ores et déjà réserver vos places pour la première pièce de cette saison :
+        <a href="http://voir-entendre-posso.fr/play/4">DISSONANCES</a> par <strong>La troupe de la queue du chat</strong> que nous avons déjà reçu plusieurs fois à <strong>La Possonnière</strong>.
+    </p>
+    <p>
+        En novembre, la troupe <strong>Scène &amp; Loire</strong> vous présentera <em>T’emballe pas</em>, comédie de <strong>Robert Rossignol</strong>.
+    </p>
+
     
     {% if production is defined and production is not empty %}
         <h2>Prochainement</h2>
@@ -42,7 +58,7 @@
 
                 <ul class="list-unstyled">
                     {% for session in production.comingSessions %}
-                        <li><a href="{{ path('vep_reservation_session_read', {'id': session.id}) }}">{{ session.date|date('d/m/Y \à H:i') }}</a></li>
+                        <li><a href="{{ path('vep_reservation_session_read', {'id': session.id}) }}">{{ days[session.date|date('w')] }} {{ session.date|date('d') }} {{ months[session.date|date('n')] }} {{ session.date|date('Y \à H:i') }}</a></li>
                     {% else %}
                         <li class="text-muted">Aucune séance programmée pour le moment</li>
                     {% endfor %}
