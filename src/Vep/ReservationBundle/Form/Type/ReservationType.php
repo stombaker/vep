@@ -20,6 +20,7 @@ class ReservationType extends AbstractType
         $builder->add('firstname', 'text', array('label' => 'Prénom'))
                 ->add('lastname', 'text', array('label' => 'Nom'))
                 ->add('city', 'text', array('label' => 'Ville', 'required' => false))
+                ->add('comment', 'textarea', array('label' => 'Commentaire', 'required' => false))
                 ->add('email', 'email', array('label' => 'Adresse e-mail'))
                 ->add('seats', 'choice', array('choices' => $this->theater->getFreeSeatList($options['session']), 'multiple' => true, 'expanded' => true))
                 ->add('save', 'submit', array('label' => 'Réserver'));

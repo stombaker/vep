@@ -68,6 +68,13 @@ class Reservation
      * @ORM\Column(name="date", type="datetime")
      */
     private $date;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="comment", type="string", length=255, nullable=true)
+     */
+    private $comment;
     
     /**
      * @ORM\ManyToOne(targetEntity="Vep\ReservationBundle\Entity\Session", inversedBy="reservations")
@@ -199,6 +206,22 @@ class Reservation
     public function getCity()
     {
         return $this->city;
+    }
+
+    /**
+     * @param string $comment
+     * @return Reservation
+     */
+    public function setComment($comment) {
+        $this->comment = $comment;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment() {
+        return $this->comment;
     }
 
     /**

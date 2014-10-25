@@ -23,105 +23,125 @@
                                 {{ seat.name }}
                             </span>
                         {% else %}
-                            <label for="seat-{{ seat.name }}" class="seat {% if seat.x == 0 or seat.x == 20 %}strap{% endif %}" style="top:{{ seat.y * 50 }}px;left:{{ seat.x * 25 }}px">
+                            <label for="seat-{{ seat.name }}"
+                                   class="seat {% if seat.x == 0 or seat.x == 20 %}strap{% endif %}"
+                                   style="top:{{ seat.y * 50 }}px;left:{{ seat.x * 25 }}px">
                                 {{ seat.name }}
                             </label>
                         {% endif %}
                     {% endfor %}
                 </div>
             </div>
+            <div style="text-align: center; font-size: 3em">Scène</div>
         </div>
         <div class="col-sm-5">
             <h3>
                 {{ session.production.title }}
-                <small><a href="{{ path('vep_reservation_production_read', {'id': session.production.id}) }}">Plus d'information</a></small>
+                <small><a href="{{ path('vep_reservation_production_read', {'id': session.production.id}) }}">Plus
+                                                                                                              d'information</a>
+                </small>
             </h3>
-            <h4>Séance du {{ days[session.date|date('w')] }} {{ session.date|date('d') }} {{ months[session.date|date('n')] }} {{ session.date|date('Y \à H:i') }}</h4>
-            
+            <h4>Séance
+                du {{ days[session.date|date('w')] }} {{ session.date|date('d') }} {{ months[session.date|date('n')] }} {{ session.date|date('Y \à H:i') }}</h4>
+
             {% for flashMessage in app.session.flashbag.get('success') %}
                 <div class="alert alert-success">
                     {{ flashMessage }}
                 </div>
             {% endfor %}
-            
+
             {% if not blocked %}
                 {{ form_start(form, {'action': path('vep_reservation_session_read', {'id': session.id}), 'attr': {'class': 'form-horizontal'} }) }}
-                    {% if form.vars.errors|length + form.seats.vars.errors|length > 0 %}
-                        <div class="alert alert-danger">
-                            {% for error in form.vars.errors %}
-                                <p>{{ error.message }}</p>
-                            {% endfor %}
-                            {% for error in form.seats.vars.errors %}
-                                <p>{{ error.message }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                {% if form.vars.errors|length + form.seats.vars.errors|length > 0 %}
+                    <div class="alert alert-danger">
+                        {% for error in form.vars.errors %}
+                            <p>{{ error.message }}</p>
+                        {% endfor %}
+                        {% for error in form.seats.vars.errors %}
+                            <p>{{ error.message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-                    <div class="form-group{% if form.firstname.vars.errors|length > 0 %} has-error{% endif %}">
-                        {{ form_label(form.firstname, null, {'label_attr': {'class': 'control-label col-sm-4'} }) }}
-                        <div class="col-sm-8">
-                            {{ form_widget(form.firstname, {'attr': {'class': 'form-control'} }) }}
-                        </div>
-                        {% if form.firstname.vars.errors|length > 0 %}
-                            <span class="help-block text-danger">
+                <div class="form-group{% if form.firstname.vars.errors|length > 0 %} has-error{% endif %}">
+                    {{ form_label(form.firstname, null, {'label_attr': {'class': 'control-label col-sm-4'} }) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.firstname, {'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    {% if form.firstname.vars.errors|length > 0 %}
+                        <span class="help-block text-danger">
                             {% for error in form.firstname.vars.errors %}
                                 {{ error.message }}
                             {% endfor %}
                             </span>
-                        {% endif %}
-                    </div>
+                    {% endif %}
+                </div>
 
-                    <div class="form-group{% if form.lastname.vars.errors|length > 0 %} has-error{% endif %}">
-                        {{ form_label(form.lastname, null, {'label_attr': {'class': 'control-label col-sm-4'} }) }}
-                        <div class="col-sm-8">
-                            {{ form_widget(form.lastname, {'attr': {'class': 'form-control'} }) }}
-                        </div>
-                        {% if form.lastname.vars.errors|length > 0 %}
-                            <span class="help-block text-danger">
+                <div class="form-group{% if form.lastname.vars.errors|length > 0 %} has-error{% endif %}">
+                    {{ form_label(form.lastname, null, {'label_attr': {'class': 'control-label col-sm-4'} }) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.lastname, {'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    {% if form.lastname.vars.errors|length > 0 %}
+                        <span class="help-block text-danger">
                             {% for error in form.lastname.vars.errors %}
                                 {{ error.message }}
                             {% endfor %}
                             </span>
-                        {% endif %}
-                    </div>
+                    {% endif %}
+                </div>
 
-                    <div class="form-group{% if form.email.vars.errors|length > 0 %} has-error{% endif %}">
-                        {{ form_label(form.email, null, {'label_attr': {'class': 'control-label col-sm-4'} }) }}
-                        <div class="col-sm-8">
-                            {{ form_widget(form.email, {'attr': {'class': 'form-control'} }) }}
-                        </div>
-                        {% if form.email.vars.errors|length > 0 %}
-                            <span class="help-block text-danger">
+                <div class="form-group{% if form.email.vars.errors|length > 0 %} has-error{% endif %}">
+                    {{ form_label(form.email, null, {'label_attr': {'class': 'control-label col-sm-4'} }) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.email, {'attr': {'class': 'form-control'} }) }}
+                    </div>
+                    {% if form.email.vars.errors|length > 0 %}
+                        <span class="help-block text-danger">
                             {% for error in form.email.vars.errors %}
                                 {{ error.message }}
                             {% endfor %}
                             </span>
-                        {% endif %}
-                    </div>
+                    {% endif %}
+                </div>
 
-                    <div class="form-group{% if form.city.vars.errors|length > 0 %} has-error{% endif %}">
-                        {{ form_label(form.city, null, {'label_attr': {'class': 'control-label col-sm-4'} }) }}
-                        <div class="col-sm-8">
-                            {{ form_widget(form.city, {'attr': {'class': 'form-control', 'placeholder': 'Optionnel'} }) }}
-                        </div>
-                        {% if form.city.vars.errors|length > 0 %}
-                            <span class="help-block text-danger">
+                <div class="form-group{% if form.city.vars.errors|length > 0 %} has-error{% endif %}">
+                    {{ form_label(form.city, null, {'label_attr': {'class': 'control-label col-sm-4'} }) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.city, {'attr': {'class': 'form-control', 'placeholder': 'Optionnel'} }) }}
+                    </div>
+                    {% if form.city.vars.errors|length > 0 %}
+                        <span class="help-block text-danger">
                             {% for error in form.city.vars.errors %}
                                 {{ error.message }}
                             {% endfor %}
                             </span>
-                        {% endif %}
-                    </div>
+                    {% endif %}
+                </div>
 
-                    <div class="hidden">
-                        {% for seat in form.seats %}
-                            {{ form_widget(seat, {'id': 'seat-' ~ seat.vars.label, 'attr': {'class': 'input-seat'} }) }}
-                        {% endfor %}
+                <div class="form-group{% if form.comment.vars.errors|length > 0 %} has-error{% endif %}">
+                    {{ form_label(form.comment, null, {'label_attr': {'class': 'control-label col-sm-4'} }) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(form.comment, {'attr': {'class': 'form-control', 'placeholder': 'Optionnel'} }) }}
                     </div>
+                    {% if form.comment.vars.errors|length > 0 %}
+                        <span class="help-block text-danger">
+                            {% for error in form.comment.vars.errors %}
+                                {{ error.message }}
+                            {% endfor %}
+                            </span>
+                    {% endif %}
+                </div>
 
-                    <div class="offset-sm-4 col-sm-8">
-                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'} }) }}
-                    </div>
+                <div class="hidden">
+                    {% for seat in form.seats %}
+                        {{ form_widget(seat, {'id': 'seat-' ~ seat.vars.label, 'attr': {'class': 'input-seat'} }) }}
+                    {% endfor %}
+                </div>
+
+                <div class="offset-sm-4 col-sm-8">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'} }) }}
+                </div>
                 {{ form_end(form) }}
             {% else %}
                 <p class="alert alert-info">
@@ -131,16 +151,24 @@
                     Nous vous invitons à arriver suffisamment tôt afin de pouvoir obtenir les places que vous désirez.
                 </p>
             {% endif %}
-            
+
             <h5 style="clear:both;padding-top: 20px">Autres séances</h5>
-            
+
             <ul>
                 {% for sessionO in session.production.sessions %}
-                    <li><a href="{{ path('vep_reservation_session_read', {'id': sessionO.id}) }}">{{ days[sessionO.date|date('w')] }} {{ sessionO.date|date('d') }} {{ months[sessionO.date|date('n')] }} {{ sessionO.date|date('Y \à H:i') }}</a></li>
+                    <li>
+                        <a href="{{ path('vep_reservation_session_read', {'id': sessionO.id}) }}">{{ days[sessionO.date|date('w')] }} {{ sessionO.date|date('d') }} {{ months[sessionO.date|date('n')] }} {{ sessionO.date|date('Y \à H:i') }}</a>
+                    </li>
                 {% endfor %}
             </ul>
-            
-            {% if is_granted('ROLE_ADMIN') %}
+
+
+        </div>
+    </div>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="row">
+            <div class="col-sm-12">
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
@@ -148,6 +176,7 @@
                             <th>Email</th>
                             <th>Ville</th>
                             <th>Places sélectionnées</th>
+                            <th>Commentaire</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -157,23 +186,24 @@
                                 <td><a href="mailto:{{ reservation.email }}">{{ reservation.email }}</a></td>
                                 <td>{{ reservation.city }}</td>
                                 <td>{{ reservation.seats|join(', ') }}</td>
+                                <td>{{ reservation.comment }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-            {% endif %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
     <script>
-        $(function(){
-            $('.input-seat:checked').each(function(){
+        $(function () {
+            $('.input-seat:checked').each(function () {
                 $('.seat[for=' + $(this).attr('id') + ']').addClass('selected')
             })
-            
-            $('.input-seat').on('change', function(){
+
+            $('.input-seat').on('change', function () {
                 if ($(this).is(':checked')) {
                     $('.seat[for=' + $(this).attr('id') + ']').addClass('selected')
                 } else {
