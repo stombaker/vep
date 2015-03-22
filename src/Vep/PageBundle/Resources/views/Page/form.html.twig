@@ -1,0 +1,75 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}{% if page is defined and page is not empty %}Modifier {{ page.title }}{% else %}Ajouter une page{% endif %}{% endblock %}
+
+{% block body %}
+    <h1>{% if page is defined and page is not empty %}Modifier {{ page.title }}{% else %}Ajouter une page{% endif %}</h1>
+    
+    {% if page is defined and page is not empty %}
+        {{ form_start(form, {'action': path('vep_page_update', {'canonical': page.canonical}), 'attr': {'class': 'form-horizontal'} }) }}
+    {% else %}
+        {{ form_start(form, {'action': path('vep_page_create'), 'attr': {'class': 'form-horizontal'} }) }}
+    {% endif %}
+        {% if form.vars.errors|length > 0 %}
+            <div class="alert alert-danger">
+                {% for error in form.vars.errors %}
+                    <p>{{ error.message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div class="form-group{% if form.title.vars.errors|length > 0 %} has-error{% endif %}">
+            {{ form_label(form.title, null, {'label_attr': {'class': 'control-label col-sm-2'} }) }}
+            <div class="col-sm-10">
+                {{ form_widget(form.title, {'attr': {'class': 'form-control'} }) }}
+            </div>
+            {% if form.title.vars.errors|length > 0 %}
+                <span class="help-block text-danger">
+                {% for error in form.title.vars.errors %}
+                    {{ error.message }}
+                {% endfor %}
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="form-group{% if form.content.vars.errors|length > 0 %} has-error{% endif %}">
+            {{ form_label(form.content, null, {'label_attr': {'class': 'control-label col-sm-2'} }) }}
+            <div class="col-sm-10">
+                {{ form_widget(form.content, {'attr': {'class': 'form-control', 'data-uk-htmleditor': '{maxsplitsize:600}', 'data-uk-check-display': '1'} }) }}
+            </div>
+            {% if form.content.vars.errors|length > 0 %}
+                <span class="help-block text-danger">
+                {% for error in form.content.vars.errors %}
+                    {{ error.message }}
+                {% endfor %}
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="form-group{% if form.menuOrder.vars.errors|length > 0 %} has-error{% endif %}">
+            {{ form_label(form.menuOrder, null, {'label_attr': {'class': 'control-label col-sm-2'} }) }}
+            <div class="col-sm-10">
+                {{ form_widget(form.menuOrder, {'attr': {'class': 'form-control'} }) }}
+            </div>
+            {% if form.menuOrder.vars.errors|length > 0 %}
+                <span class="help-block text-danger">
+                {% for error in form.menuOrder.vars.errors %}
+                    {{ error.message }}
+                {% endfor %}
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="offset-sm-2 col-sm-10">
+            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'} }) }}
+            <a href="{{ path('vep_page_list') }}" class="btn btn-default">Retour à la liste</a>
+        </div>
+        <div class="hidden">{{ form_rest(form) }}</div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('body>.navbar')[0].style.zIndex = 0;
+    </script>
+{% endblock %}

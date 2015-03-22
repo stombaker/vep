@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Liste des pages{% endblock %}
+
+{% block body %}
+    <h1>Liste des pages</h1>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Page</th>
+                <th>Ordre dans le menu</th>
+                <th>Créée</th>
+                <th>Modifiée</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for page in pages %}
+                <tr>
+                    <td>{{ page.title }}</td>
+                    <td>
+                        {% if page.menuOrder is defined and page.menuOrder is not null %}
+                            {{ page.menuOrder }}
+                        {% else %}
+                            <em>Inexistant</em>
+                        {% endif %}
+                    </td>
+                    <td>{{ page.creation|date('d/m/Y') }}</td>
+                    <td>{{ page.modification|date('d/m/Y') }}</td>
+                    <td>
+                        <a href="{{ path('vep_page_update', {'canonical': page.canonical}) }}">
+                            Modifier
+                        </a>
+                        {% if page.canonical != 'homepage' %}
+                            -
+                            <a href="{{ path('vep_page_delete', {'canonical': page.canonical}) }}">
+                                Supprimer
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p><a href="{{ path('vep_page_create') }}" class="btn btn-primary">Créer</a></p>
+{% endblock %}

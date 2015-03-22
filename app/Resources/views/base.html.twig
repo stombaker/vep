@@ -6,6 +6,9 @@
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/bootstrap-theme.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.18.0/css/uikit.min.css" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/5.0.0/codemirror.min.css" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.18.0/css/components/htmleditor.min.css" />
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}" />
     </head>
@@ -27,11 +30,16 @@
                         <li><a href="{{ path('homepage') }}"><i class="glyphicon glyphicon-home"></i> Accueil</a></li>
                         <li><a href="{{ path('vep_reservation_production_list') }}"><i class="glyphicon glyphicon-list"></i> Liste des pièces</a></li>
                         <li><a href="{{ path('vep_reservation_session_list') }}"><i class="glyphicon glyphicon-calendar"></i> Liste des séances</a></li>
+                        {{ render(controller("VepPageBundle:Menu:list")) }}
                     </ul>
                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                         <ul class="nav navbar-nav navbar-right">
-                            <li class="navbar-text">Connecté en tant que {{ app.user.username }}</li>
-                            <li><a href="{{ path('fos_user_security_logout') }}">déconnexion</a></li>
+                            <li><a href="{{ path('vep_page_list') }}">Liste des pages</a></li>
+                            <li class="text-center">
+                                <a href="{{ path('fos_user_security_logout') }}">
+                                    Déconnexion ({{ app.user.username }})
+                                </a>
+                            </li>
                         </ul>
                     {% endif %}
                 </div>
@@ -48,6 +56,14 @@
         
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('//cdnjs.cloudflare.com/ajax/libs/uikit/2.18.0/js/uikit.min.js') }}"></script>
+        <script src="{{ asset('//cdnjs.cloudflare.com/ajax/libs/codemirror/5.0.0/codemirror.js') }}"></script>
+        <script src="{{ asset('//cdnjs.cloudflare.com/ajax/libs/codemirror/5.0.0/mode/markdown/markdown.min.js') }}"></script>
+        <script src="{{ asset('//cdnjs.cloudflare.com/ajax/libs/codemirror/5.0.0/addon/mode/overlay.min.js') }}"></script>
+        <script src="{{ asset('//cdnjs.cloudflare.com/ajax/libs/codemirror/5.0.0/mode/xml/xml.min.js') }}"></script>
+        <script src="{{ asset('//cdnjs.cloudflare.com/ajax/libs/codemirror/5.0.0/mode/gfm/gfm.min.js') }}"></script>
+        <script src="{{ asset('//cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js') }}"></script>
+        <script src="{{ asset('//cdnjs.cloudflare.com/ajax/libs/uikit/2.18.0/js/components/htmleditor.min.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

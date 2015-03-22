@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Vep\MainBundle\VepMainBundle(),
             new Vep\ReservationBundle\VepReservationBundle(),
             new Vep\UserBundle\VepUserBundle(),
+            new Vep\PageBundle\VepPageBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

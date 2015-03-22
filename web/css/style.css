@@ -66,3 +66,7 @@ body {
     border-radius: 50px;
     background-color: rgba(0, 0, 255, 0.5);
 }
+
+.uk-htmleditor {
+    z-index: 10000;
+}

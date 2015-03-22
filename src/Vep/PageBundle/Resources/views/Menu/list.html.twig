@@ -1,0 +1,3 @@
+{% for page in list %}
+    <li><a href="{{ path('vep_page_read', {'canonical': page.canonical}) }}">{{ page.title }}</a></li>
+{% endfor %}

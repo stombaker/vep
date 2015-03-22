@@ -1,0 +1,23 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Suppression de {{ page.title }}{% endblock %}
+
+{% block body %}
+    <h1>Suppression de {{ page.title }}</h1>
+    
+    <form method="post" action="{{ path('vep_page_delete', {'canonical': page.canonical}) }}">
+        <p class="alert alert-danger">
+            Vous vous apprêtez à supprimer la page <strong>{{ page.title }}</strong>.
+            Confirmez-vous cette action ?
+        </p>
+
+        <input type="submit" name="valid" value="Oui, supprimer la page" class="btn btn-danger" />
+        <a href="{{ path('vep_page_list') }}" class="btn btn-primary">Non, revenir à la liste</a>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('body>.navbar')[0].style.zIndex = 0;
+    </script>
+{% endblock %}

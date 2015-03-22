@@ -37,8 +37,10 @@
         <div class="col-sm-5">
             <h3>
                 {{ session.production.title }}
-                <small><a href="{{ path('vep_reservation_production_read', {'id': session.production.id}) }}">Plus
-                                                                                                              d'information</a>
+                <small>
+                    <a href="{{ path('vep_reservation_production_read', {'id': session.production.id}) }}">
+                        Plus d'information
+                    </a>
                 </small>
             </h3>
             <h4>Séance
@@ -151,6 +153,13 @@
                     Nous vous invitons à arriver suffisamment tôt afin de pouvoir obtenir les places que vous désirez.
                 </p>
             {% endif %}
+
+            <h5 style="clear:both;padding-top: 20px">Tarifs</h5>
+
+            <ul>
+                <li>Plein tarif : 7&euro;</li>
+                <li>Tarif réduit : 5&euro; <em>(Adhérents et enfants de moins de 14 ans)</em></li>
+            </ul>
 
             <h5 style="clear:both;padding-top: 20px">Autres séances</h5>
 

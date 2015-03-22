@@ -1,3 +1,7 @@
+vep_page:
+    resource: "@VepPageBundle/Resources/config/routing.yml"
+    prefix:   /
+
 vep_reservation:
     resource: "@VepReservationBundle/Resources/config/routing.yml"
     prefix:   /
